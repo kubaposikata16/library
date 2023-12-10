@@ -20,4 +20,8 @@ public class Book {
     private String author;
     private int publicationDate;
     private String description;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "book")
+    private List<Borrow> borrows;
 }
