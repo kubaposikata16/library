@@ -12,7 +12,7 @@ import java.util.List;
 public class BookController {
     @Autowired
     BookRepository bookRepository;
-
+    ////////////////COSTAM
     @GetMapping //pobiera wszystkie
     public List<Book> getAllBooks(){
         return bookRepository.findAll();
