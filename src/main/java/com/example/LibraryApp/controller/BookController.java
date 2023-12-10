@@ -12,20 +12,23 @@ import java.util.List;
 public class BookController {
     @Autowired
     BookRepository bookRepository;
-    ////////////////COSTAM
-    @GetMapping //pobiera wszystkie
-    public List<Book> getAllBooks(){
+
+    @GetMapping //pobiera wszystkie książki
+    public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
-    @GetMapping("/{id}") //pobiera po id
-    public Book getBookById(@PathVariable("id") int id){
+
+    @GetMapping("/{id}") //pobiera ksiazke po id
+    public Book getBookById(@PathVariable("id") int id) {
         return bookRepository.findById(id).orElse(null);
     }
-    @PostMapping("") //tworzy nowy
+
+    @PostMapping("") //tworzy nową ksiażke
     public Book addBook(@RequestBody Book book) {
         return bookRepository.save(book);
     }
-    @PutMapping("/{id}") //edytuje po id
+
+    @PutMapping("/{id}") //edytuje ksiażke po id
     public Book updateBook(@PathVariable("id") int id, @RequestBody Book updatedBook) {
         Book book = bookRepository.findById(id).orElse(null);
         if (book != null) {
@@ -38,8 +41,9 @@ public class BookController {
             return null;
         }
     }
-    @DeleteMapping("/{id}") //usuwa po id
-    public void deleteBook(@PathVariable("id") int id){
+
+    @DeleteMapping("/{id}") //usuwa ksiazke po id
+    public void deleteBook(@PathVariable("id") int id) {
         bookRepository.deleteById(id);
     }
 }

@@ -21,19 +21,18 @@ public class BorrowController {
     @Autowired
     ReaderRepository readerRepository;
 
-    @GetMapping //pobiera wszystkie
+    @GetMapping //pobiera wszystkie wypożyczenia
     public List<Borrow> getAllReaders() {
         return borrowRepository.findAll();
     }
 
-    @GetMapping("/{id}") //pobiera po id
+    @GetMapping("/{id}") //pobiera wypozyczenie po id
     public Borrow getReaderById(@PathVariable("id") int id) {
         return borrowRepository.findById(id).orElse(null);
     }
 
-    @PostMapping("") //tworzy nowy
+    @PostMapping("") //tworzy nowe wypozyczenie
     public Borrow addReader(@RequestBody Borrow borrowing) {
-        //return borrowRepository.save(borrowing);
         Borrow newBorrow = new Borrow();
 
         // Pobierz Book i Reader na podstawie przekazanych ID
@@ -51,7 +50,7 @@ public class BorrowController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}") //edytuje wypozyczenie po id
     public Borrow updateReader(@PathVariable("id") int id, @RequestBody Borrow updatedBorrowing) {
         Borrow borrowing = borrowRepository.findById(id).orElse(null);
 
@@ -71,7 +70,7 @@ public class BorrowController {
         }
     }
 
-    @DeleteMapping("/{id}") //usuwa po id
+    @DeleteMapping("/{id}") //usuwa wypozyczenie po id
     public void deleteBorrow(@PathVariable("id") int id) {
         borrowRepository.deleteById(id);
     }
