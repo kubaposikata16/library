@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+//encja czytelnik
 @Entity
 @Data
 @AllArgsConstructor

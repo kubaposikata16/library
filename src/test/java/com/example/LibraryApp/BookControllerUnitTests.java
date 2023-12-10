@@ -1,4 +1,5 @@
 package com.example.LibraryApp;
+
 import com.example.LibraryApp.controller.BookController;
 import com.example.LibraryApp.domain.Book;
 import com.example.LibraryApp.repository.BookRepository;
@@ -27,29 +28,24 @@ public class BookControllerUnitTests {
     private BookService bookService = new BookServiceImpl();
     @InjectMocks
     private BookController bookController;
+
+    //test jednostkowy dla pobierania wszystkich ksiązek
     @Test
     public void testGetAllBooks() {
-        // Przygotowanie
         Book book1 = new Book(1, "Title1", "Author1", 2020, "Description1", null);
         Book book2 = new Book(2, "Title2", "Author2", 2021, "Description2", null);
         List<Book> books = Arrays.asList(book1, book2);
         Mockito.when(bookRepository.findAll()).thenReturn(books);
-        // Działanie
         List<Book> result = bookController.getAllBooks();
-        // Asercja
         assertEquals(2, result.size());
     }
 
+    //test jednostkowy dla pobierania wszystkich ksiązek
     @Test
     public void testAddBook() {
-        // Przygotowanie
         Book newBook = new Book(3, "Title3", "Author3", 2022, "Description3", null);
         Mockito.when(bookRepository.save(any())).thenReturn(newBook);
-
-        // Działanie
         Book result = bookController.addBook(newBook);
-
-        // Asercja
         assertEquals(newBook, result);
     }
 }

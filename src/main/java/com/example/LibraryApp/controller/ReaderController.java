@@ -13,19 +13,22 @@ public class ReaderController {
     @Autowired
     ReaderRepository readerRepository;
 
-    @GetMapping //pobiera wszystkie
-    public List<Reader> getAllReaders(){
+    @GetMapping //pobiera wszystkich czytelnikow
+    public List<Reader> getAllReaders() {
         return readerRepository.findAll();
     }
-    @GetMapping("/{id}") //pobiera po id
-    public Reader getReaderById(@PathVariable("id") int id){
+
+    @GetMapping("/{id}") //pobiera czytelnika po id
+    public Reader getReaderById(@PathVariable("id") int id) {
         return readerRepository.findById(id).orElse(null);
     }
-    @PostMapping("") //tworzy nowy
+
+    @PostMapping("") //tworzy nowego czytelnika
     public Reader addReader(@RequestBody Reader reader) {
         return readerRepository.save(reader);
     }
-    @PutMapping("/{id}") //edytuje po id
+
+    @PutMapping("/{id}") //edytuje czytelnika po id
     public Reader updateReader(@PathVariable("id") int id, @RequestBody Reader updatedReader) {
         Reader client = readerRepository.findById(id).orElse(null);
         if (client != null) {
@@ -37,8 +40,9 @@ public class ReaderController {
             return null;
         }
     }
-    @DeleteMapping("/{id}") //usuwa po id
-    public void deleteReader(@PathVariable("id") int id){
+
+    @DeleteMapping("/{id}") //usuwa czytelnika po id
+    public void deleteReader(@PathVariable("id") int id) {
         readerRepository.deleteById(id);
     }
 }

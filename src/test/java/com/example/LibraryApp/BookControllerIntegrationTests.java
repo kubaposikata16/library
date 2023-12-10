@@ -25,6 +25,7 @@ public class BookControllerIntegrationTests {
     @Autowired
     private ObjectMapper objectMapper;
 
+    //test integracyjny dla pobierania wszystkich ksiązek
     @Test
     public void testGetAllBooks() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/books")
@@ -35,19 +36,15 @@ public class BookControllerIntegrationTests {
         assertEquals(200, result.getResponse().getStatus());
     }
 
+    //test integracyjny dla pobierania dodawania ksiązki
     @Test
     public void testAddBook() throws Exception {
-        // Arrange
         Book newBook = new Book(4, "Title4", "Author4", 2023, "Description4", null);
         String jsonRequest = objectMapper.writeValueAsString(newBook);
-
-        // Act
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/books")
                         .content(jsonRequest)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
-
-        // Assert
         assertEquals(200, result.getResponse().getStatus());
     }
 }

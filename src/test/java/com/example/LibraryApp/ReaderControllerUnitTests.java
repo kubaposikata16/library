@@ -1,4 +1,5 @@
 package com.example.LibraryApp;
+
 import com.example.LibraryApp.controller.ReaderController;
 import com.example.LibraryApp.domain.Reader;
 import com.example.LibraryApp.repository.ReaderRepository;
@@ -25,16 +26,14 @@ public class ReaderControllerUnitTests {
     @InjectMocks
     private ReaderController readerController;
 
+    //test jednostkowy dla dodawania czytelnika
     @Test
     public void testAddReader() {
-        // Arrange
         Reader newReader = new Reader(1, "John", "Doe", 2020, null);
         Mockito.when(readerRepository.save(any())).thenReturn(newReader);
 
-        // Act
         Reader result = readerController.addReader(newReader);
 
-        // Assert
         assertEquals(newReader, result);
     }
 }
