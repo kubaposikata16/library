@@ -33,6 +33,9 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(id).orElse(null);
         if (book != null) {
             book.setTitle(updatedBook.getTitle());
+            System.out.println("print 1");
+            System.out.println("print 2");
+            System.out.println("print 3");
             book.setAuthor(updatedBook.getAuthor());
             book.setPublicationDate(updatedBook.getPublicationDate());
             book.setDescription(updatedBook.getDescription());
@@ -46,4 +49,5 @@ public class BookServiceImpl implements BookService {
     public void deleteBook(int id) {
         bookRepository.deleteById(id);
     }
+
 }
