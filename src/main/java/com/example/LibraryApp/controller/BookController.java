@@ -3,7 +3,9 @@ package com.example.LibraryApp.controller;
 import com.example.LibraryApp.domain.Book;
 import com.example.LibraryApp.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class BookController {
 
     @GetMapping("/{id}") //pobiera ksiazke po id
     public Book getBookById(@PathVariable("id") int id) {
-        return bookRepository.findById(id).orElse(null);
+        return bookRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found with id: " + id));
     }
 
     @PostMapping("") //tworzy nową ksiażke
@@ -30,16 +32,12 @@ public class BookController {
 
     @PutMapping("/{id}") //edytuje ksiażke po id
     public Book updateBook(@PathVariable("id") int id, @RequestBody Book updatedBook) {
-        Book book = bookRepository.findById(id).orElse(null);
-        if (book != null) {
-            book.setTitle(updatedBook.getTitle());
-            book.setAuthor(updatedBook.getAuthor());
-            book.setPublicationDate(updatedBook.getPublicationDate());
-            book.setDescription(updatedBook.getDescription());
-            return bookRepository.save(book);
-        } else {
-            return null;
-        }
+        Book book = bookRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found with id: " + id));
+        book.setTitle(updatedBook.getTitle());
+        book.setAuthor(updatedBook.getAuthor());
+        book.setPublicationDate(updatedBook.getPublicationDate());
+        book.setDescription(updatedBook.getDescription());
+        return bookRepository.save(book);
     }
 
     @DeleteMapping("/{id}") //usuwa ksiazke po id

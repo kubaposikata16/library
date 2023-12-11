@@ -5,7 +5,9 @@ import com.example.LibraryApp.repository.BorrowRepository;
 import com.example.LibraryApp.repository.BookRepository;
 import com.example.LibraryApp.repository.ReaderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class BorrowServiceImpl implements BorrowService {
 
     @Override
     public Borrow getBorrowById(int id) {
-        return borrowRepository.findById(id).orElse(null);
+        return borrowRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Borrow not found with id: " + id));
     }
 
     @Override
@@ -42,23 +44,21 @@ public class BorrowServiceImpl implements BorrowService {
                 return borrowRepository.save(newBorrow);
             }
         }
-        return null;
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Book or Reader provided");
     }
 
     @Override
     public Borrow updateBorrow(int id, Borrow updatedBorrowing) {
-        Borrow borrowing = borrowRepository.findById(id).orElse(null);
-        if (borrowing != null) {
-            if (updatedBorrowing.getBook() != null && updatedBorrowing.getReader() != null) {
-                if (bookRepository.existsById(updatedBorrowing.getBook().getId()) &&
-                        readerRepository.existsById(updatedBorrowing.getReader().getId())) {
-                    borrowing.setBook(updatedBorrowing.getBook());
-                    borrowing.setReader(updatedBorrowing.getReader());
-                    return borrowRepository.save(borrowing);
-                }
+        Borrow borrowing = borrowRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Borrow not found with id: " + id));
+        if (updatedBorrowing.getBook() != null && updatedBorrowing.getReader() != null) {
+            if (bookRepository.existsById(updatedBorrowing.getBook().getId()) &&
+                    readerRepository.existsById(updatedBorrowing.getReader().getId())) {
+                borrowing.setBook(updatedBorrowing.getBook());
+                borrowing.setReader(updatedBorrowing.getReader());
+                return borrowRepository.save(borrowing);
             }
         }
-        return null;
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Book or Reader provided");
     }
 
     @Override

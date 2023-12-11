@@ -7,7 +7,9 @@ import com.example.LibraryApp.repository.BorrowRepository;
 import com.example.LibraryApp.repository.BookRepository;
 import com.example.LibraryApp.repository.ReaderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class BorrowController {
 
     @GetMapping("/{id}") //pobiera wypozyczenie po id
     public Borrow getReaderById(@PathVariable("id") int id) {
-        return borrowRepository.findById(id).orElse(null);
+        return borrowRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Borrow not found with id: " + id));
     }
 
     @PostMapping("") //tworzy nowe wypozyczenie
@@ -36,38 +38,22 @@ public class BorrowController {
         Borrow newBorrow = new Borrow();
 
         // Pobierz Book i Reader na podstawie przekazanych ID
-        Book book = bookRepository.findById(borrowing.getBook().getId()).orElse(null);
-        Reader reader = readerRepository.findById(borrowing.getReader().getId()).orElse(null);
-
-        // Sprawdź czy istnieją Book i Reader o podanych ID
-        if (book != null && reader != null) {
-            newBorrow.setBook(book);
-            newBorrow.setReader(reader);
-            return borrowRepository.save(newBorrow);
-        } else {
-            // Obsługa przypadku, gdy nie znaleziono Book lub Reader
-            return null;
-        }
+        Book book = bookRepository.findById(borrowing.getBook().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
+        Reader reader = readerRepository.findById(borrowing.getReader().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reader not found"));
+        newBorrow.setBook(book);
+        newBorrow.setReader(reader);
+        return borrowRepository.save(newBorrow);
     }
 
     @PutMapping("/{id}") //edytuje wypozyczenie po id
     public Borrow updateReader(@PathVariable("id") int id, @RequestBody Borrow updatedBorrowing) {
-        Borrow borrowing = borrowRepository.findById(id).orElse(null);
+        Borrow borrowing = borrowRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Borrow not found with id: " + id));
+        Book book = bookRepository.findById(updatedBorrowing.getBook().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found with id: " + id));
+        Reader reader = readerRepository.findById(updatedBorrowing.getReader().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reader not found with id: " + id));
+        borrowing.setBook(book);
+        borrowing.setReader(reader);
+        return borrowRepository.save(borrowing);
 
-        if (borrowing != null) {
-            Book book = bookRepository.findById(updatedBorrowing.getBook().getId()).orElse(null);
-            Reader reader = readerRepository.findById(updatedBorrowing.getReader().getId()).orElse(null);
-
-            if (book != null && reader != null) {
-                borrowing.setBook(book);
-                borrowing.setReader(reader);
-                return borrowRepository.save(borrowing);
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
     }
 
     @DeleteMapping("/{id}") //usuwa wypozyczenie po id

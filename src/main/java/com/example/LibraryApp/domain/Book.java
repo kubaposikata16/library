@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-//Encja ksiazki
 @Entity
 @Data
 @AllArgsConstructor
