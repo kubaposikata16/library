@@ -26,7 +26,6 @@ public class ReaderControllerUnitTests {
     @InjectMocks
     private ReaderController readerController;
 
-    //test jednostkowy dla dodawania czytelnika
     @Test
     public void testAddReader() {
         Reader newReader = new Reader(1, "John", "Doe", 2020, null);
