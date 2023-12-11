@@ -29,7 +29,6 @@ public class BookControllerUnitTests {
     @InjectMocks
     private BookController bookController;
 
-    //test jednostkowy dla pobierania wszystkich ksiązek
     @Test
     public void testGetAllBooks() {
         Book book1 = new Book(1, "Title1", "Author1", 2020, "Description1", null);
@@ -40,7 +39,6 @@ public class BookControllerUnitTests {
         assertEquals(2, result.size());
     }
 
-    //test jednostkowy dla pobierania wszystkich ksiązek
     @Test
     public void testAddBook() {
         Book newBook = new Book(3, "Title3", "Author3", 2022, "Description3", null);
