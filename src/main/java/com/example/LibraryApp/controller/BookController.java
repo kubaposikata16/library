@@ -15,7 +15,7 @@ public class BookController {
     @Autowired
     BookRepository bookRepository;
 
-    @GetMapping //pobiera wszystkie książki
+    @GetMapping //pobiera wszystkie książki,
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
