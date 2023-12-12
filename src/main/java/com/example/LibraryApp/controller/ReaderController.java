@@ -15,22 +15,22 @@ public class ReaderController {
     @Autowired
     ReaderRepository readerRepository;
 
-    @GetMapping //pobiera wszystkich czytelnikow
+    @GetMapping
     public List<Reader> getAllReaders() {
         return readerRepository.findAll();
     }
 
-    @GetMapping("/{id}") //pobiera czytelnika po id
+    @GetMapping("/{id}")
     public Reader getReaderById(@PathVariable("id") int id) {
         return readerRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reader not found with id: " + id));
     }
 
-    @PostMapping("") //tworzy nowego czytelnika
+    @PostMapping("")
     public Reader addReader(@RequestBody Reader reader) {
         return readerRepository.save(reader);
     }
 
-    @PutMapping("/{id}") //edytuje czytelnika po id
+    @PutMapping("/{id}")
     public Reader updateReader(@PathVariable("id") int id, @RequestBody Reader updatedReader) {
         Reader client = readerRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reader not found with id: " + id));
         client.setName(updatedReader.getName());
@@ -39,7 +39,7 @@ public class ReaderController {
         return readerRepository.save(client);
     }
 
-    @DeleteMapping("/{id}") //usuwa czytelnika po id
+    @DeleteMapping("/{id}")
     public void deleteReader(@PathVariable("id") int id) {
         readerRepository.deleteById(id);
     }

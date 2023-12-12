@@ -23,21 +23,20 @@ public class BorrowController {
     @Autowired
     ReaderRepository readerRepository;
 
-    @GetMapping //pobiera wszystkie wypożyczenia
+    @GetMapping
     public List<Borrow> getAllReaders() {
         return borrowRepository.findAll();
     }
 
-    @GetMapping("/{id}") //pobiera wypozyczenie po id
+    @GetMapping("/{id}")
     public Borrow getReaderById(@PathVariable("id") int id) {
         return borrowRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Borrow not found with id: " + id));
     }
 
-    @PostMapping("") //tworzy nowe wypozyczenie
+    @PostMapping("")
     public Borrow addReader(@RequestBody Borrow borrowing) {
         Borrow newBorrow = new Borrow();
-
-        // Pobierz Book i Reader na podstawie przekazanych ID
+        //Pobierz Book i Reader na podstawie przekazanych ID
         Book book = bookRepository.findById(borrowing.getBook().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
         Reader reader = readerRepository.findById(borrowing.getReader().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reader not found"));
         newBorrow.setBook(book);
@@ -45,7 +44,7 @@ public class BorrowController {
         return borrowRepository.save(newBorrow);
     }
 
-    @PutMapping("/{id}") //edytuje wypozyczenie po id
+    @PutMapping("/{id}")
     public Borrow updateReader(@PathVariable("id") int id, @RequestBody Borrow updatedBorrowing) {
         Borrow borrowing = borrowRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Borrow not found with id: " + id));
         Book book = bookRepository.findById(updatedBorrowing.getBook().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found with id: " + id));
@@ -56,7 +55,7 @@ public class BorrowController {
 
     }
 
-    @DeleteMapping("/{id}") //usuwa wypozyczenie po id
+    @DeleteMapping("/{id}")
     public void deleteBorrow(@PathVariable("id") int id) {
         borrowRepository.deleteById(id);
     }

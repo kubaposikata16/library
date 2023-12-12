@@ -15,22 +15,22 @@ public class BookController {
     @Autowired
     BookRepository bookRepository;
 
-    @GetMapping //pobiera wszystkie książki
+    @GetMapping
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
-    @GetMapping("/{id}") //pobiera ksiazke po id
+    @GetMapping("/{id}")
     public Book getBookById(@PathVariable("id") int id) {
         return bookRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found with id: " + id));
     }
 
-    @PostMapping("") //tworzy nową ksiażke
+    @PostMapping("")
     public Book addBook(@RequestBody Book book) {
         return bookRepository.save(book);
     }
 
-    @PutMapping("/{id}") //edytuje ksiażke po id
+    @PutMapping("/{id}")
     public Book updateBook(@PathVariable("id") int id, @RequestBody Book updatedBook) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found with id: " + id));
         book.setTitle(updatedBook.getTitle());
@@ -40,7 +40,7 @@ public class BookController {
         return bookRepository.save(book);
     }
 
-    @DeleteMapping("/{id}") //usuwa ksiazke po id
+    @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable("id") int id) {
         bookRepository.deleteById(id);
     }
